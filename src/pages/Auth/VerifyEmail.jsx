@@ -98,6 +98,9 @@ const VerifyEmail = () => {
       const response = await verifyEmail(payload).unwrap();
       console.log(response.data.accessToken);
       sessionStorage.setItem("verifyToken", response.data.accessToken);
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
+      console.log(response.data);
       message.success(response.message || "Email verified successfully!");
       navigate("/auth/reset-password");
     } catch (error) {

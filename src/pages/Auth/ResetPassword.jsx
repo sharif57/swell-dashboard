@@ -119,12 +119,11 @@ const ResetPassword = () => {
       confirmPassword: values.rePassword,
     };
 
-    
-
-    console.log("Payload sent to API:", payload); 
+    console.log("Payload sent to API:", payload);
 
     try {
       const response = await resetPassword(payload).unwrap();
+      // sessionStorage.getItem("verifyToken", response.data.accessToken);
       message.success(response.message || "Password reset successfully!");
       navigate("/auth/sign-in"); // Redirect to sign-in page
     } catch (error) {

@@ -1,53 +1,39 @@
-import { Button } from "antd";
+import { Button, Spin, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import PageHeading from "../../Components/PageHeading";
+import { usePrivacyQuery } from "../../features/PolicySlice";
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
+
+  // Fetching Privacy Policy content using the query hook
+  const { data, isLoading, error } = usePrivacyQuery();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[70vh]">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  if (error) {
+    message.error("Failed to load Privacy Policy. Please try again.");
+    return (
+      <div className="min-h-[70vh] flex flex-col justify-center items-center">
+        <p className="text-red-500 text-lg">Error loading Privacy Policy.</p>
+      </div>
+    );
+  }
+
+  const privacyDescription = data?.data?.[0]?.description || "No Privacy Policy content available.";
+
   return (
     <div className="min-h-[70vh] flex flex-col justify-between">
       <div className="space-y-4">
         <PageHeading title={"Privacy Policy"} />
-        <div className="space-y-4 ">
-          <p>
-            Lorem ipsum dolor sit amet consectetur. Fringilla a cras vitae orci.
-            Egestas duis id nisl sed ante congue scelerisque. Eleifend facilisis
-            aliquet tempus morbi leo sagittis. Pellentesque odio amet turpis
-            habitant. Imperdiet tincidunt nisl consectetur hendrerit accumsan
-            vehicula imperdiet mattis. Neque a vitae diam pharetra duis
-            habitasse convallis luctus pulvinar. Pharetra nunc morbi elementum
-            nisl magnis convallis arcu enim tortor. Cursus a sed tortor enim mi
-            imperdiet massa donec mauris. Sem morbi morbi posuere faucibus. Cras
-            risus ultrices duis pharetra sit porttitor elementum sagittis
-            elementum. Ut vitae blandit pulvinar fermentum in id sed. At
-            pellentesque non semper eget egestas vulputate id volutpat quis.
-            Dolor etiam sodales at elementum mattis nibh quam placerat ut.
-            Suspendisse est adipiscing proin et. Leo nisi bibendum donec ac non
-            eget euismod suscipit. At ultricies nullam ipsum tellus. Non dictum
-            orci at tortor convallis tortor suspendisse. Ac duis senectus arcu
-            nullam in suspendisse vitae. Tellus interdum enim lorem vel morbi
-            lectus.
-          </p>
-
-          <p>
-            Lorem ipsum dolor sit amet consectetur. Fringilla a cras vitae orci.
-            Egestas duis id nisl sed ante congue scelerisque. Eleifend facilisis
-            aliquet tempus morbi leo sagittis. Pellentesque odio amet turpis
-            habitant. Imperdiet tincidunt nisl consectetur hendrerit accumsan
-            vehicula imperdiet mattis. Neque a vitae diam pharetra duis
-            habitasse convallis luctus pulvinar. Pharetra nunc morbi elementum
-            nisl magnis convallis arcu enim tortor. Cursus a sed tortor enim mi
-            imperdiet massa donec mauris. Sem morbi morbi posuere faucibus. Cras
-            risus ultrices duis pharetra sit porttitor elementum sagittis
-            elementum. Ut vitae blandit pulvinar fermentum in id sed. At
-            pellentesque non semper eget egestas vulputate id volutpat quis.
-            Dolor etiam sodales at elementum mattis nibh quam placerat ut.
-            Suspendisse est adipiscing proin et. Leo nisi bibendum donec ac non
-            eget euismod suscipit. At ultricies nullam ipsum tellus. Non dictum
-            orci at tortor convallis tortor suspendisse. Ac duis senectus arcu
-            nullam in suspendisse vitae. Tellus interdum enim lorem vel morbi
-            lectus.
-          </p>
+        <div className="space-y-4">
+          <p className="text-gray-600">{privacyDescription}</p>
         </div>
       </div>
       <div className="flex justify-end pt-10">
@@ -58,7 +44,7 @@ const PrivacyPolicy = () => {
             color: "#fff",
           }}
           htmlType="submit"
-          className="w-[400px] h-[56px]  placeholder:text-[#999999] text-[18px] font-medium"
+          className="w-[400px] h-[56px] placeholder:text-[#999999] text-[18px] font-medium"
         >
           Edit
         </Button>

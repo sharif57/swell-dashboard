@@ -1,5 +1,3 @@
-
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Replace with your base URL
@@ -53,8 +51,8 @@ export const authApi = createApi({
 
     resetPassword: builder.mutation({
       query: (data) => {
-        const token = sessionStorage.getItem("verify-token");
-
+        const token = sessionStorage.getItem("verifyToken");
+        console.log("token: from redux auth", token);
         return {
           url: "/auth/reset-password",
           method: "POST",

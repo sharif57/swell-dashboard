@@ -14,6 +14,8 @@ import EditAboutUs from "../pages/Settings/EditAboutUs";
 import AboutUs from "../pages/Settings/AboutUs";
 import Notifications from "../pages/Main/Notifications/Notifications";
 import { LuUsers2 } from "react-icons/lu";
+import Feedback from "../pages/Main/Feedback/Feedback";
+import { FcFeedback } from "react-icons/fc";
 
 export const dashboardItems = [
   {
@@ -28,6 +30,13 @@ export const dashboardItems = [
     icon: LuUsers2,
     element: <Users />,
   },
+
+  {
+    name: "Feedback",
+    path: "/feedback",
+    icon: FcFeedback,
+    element: <Feedback />,
+  },
   {
     name: "Settings",
     path: "/settings",
@@ -40,12 +49,6 @@ export const dashboardItems = [
     element: <Notifications />,
   },
 
-  // {
-  //   name: "Earnings",
-  //   path: "/earnings",
-  //   icon: GrMoney,
-  //   element: <Earnings />,
-  // },
   // {
   //   name: "Subscription",
   //   path: "/subscriptions",
