@@ -1,9 +1,12 @@
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import PageHeading from "../../Components/PageHeading";
+import { useAboutUsQuery } from "../../features/PolicySlice";
 
 const AboutUs = () => {
   const navigate = useNavigate();
+  const {data} = useAboutUsQuery()
+  console.log(data?.description)
   return (
     <div className="min-h-[70vh] flex flex-col justify-between">
       <div className="space-y-4">

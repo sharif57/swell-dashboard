@@ -11,7 +11,7 @@ import { dashboardItems } from "../constants/router.constants";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main />,
+    element: <Main  />,
     children: routesGenerators(dashboardItems),
   },
   {

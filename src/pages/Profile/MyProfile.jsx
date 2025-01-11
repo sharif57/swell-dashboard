@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Button, Form, Input } from "antd";
 import dashProfile from "../../assets/images/dashboard-profile.png";
 import { FiEdit } from "react-icons/fi";
@@ -7,8 +6,12 @@ import PhoneCountryInput from "../../Components/PhoneCountryInput";
 import PageHeading from "../../Components/PageHeading";
 
 const MyProfile = () => {
-  const [code, setCode] = useState(null);
   const navigate = useNavigate();
+
+   const userInfo = JSON.parse(localStorage.getItem("user")) || {};
+    const { name, role, image , email, phone} = userInfo;
+    console.log(userInfo)
+
 
   const onFinish = (values) => {
     console.log("Form Submission Successful:", values);
@@ -19,9 +22,9 @@ const MyProfile = () => {
   };
 
   const profileData = {
-    name: "Enrique",
-    email: "enrique@gmail.com",
-    phone: "+880 150597212",
+    name: name,
+    email: email,
+    phone: phone ,
     profile: dashProfile,
   };
 
@@ -67,7 +70,7 @@ const MyProfile = () => {
               className="h-36 w-36 rounded-full border-2 border-gray-200 shadow-sm mb-4"
             />
             <h5 className="text-lg text-gray-800 font-medium">Profile</h5>
-            <h4 className="text-2xl text-gray-900 font-bold">Admin</h4>
+            <h4 className="text-2xl text-gray-900 font-bold">{role}</h4>
           </div>
 
           {/* Form Fields */}

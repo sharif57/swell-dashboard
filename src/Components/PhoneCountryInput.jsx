@@ -18,6 +18,7 @@ const PhoneCountryInput = ({ disabled }) => {
       defaultCountry="RU"
       value={phoneNumber?.toString()}
       onChange={setPhoneNumber}
+      
     />
   );
 };

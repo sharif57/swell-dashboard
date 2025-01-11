@@ -1,25 +1,39 @@
-import React, { useState } from "react";
-import { Button, DatePicker, Input, Table } from "antd";
+import { Alert, Button, Spin, Table } from "antd";
+import dayjs from "dayjs"; // Import Day.js for date formatting
 import { FiAlertCircle } from "react-icons/fi";
+import { useState } from "react";
 import DashboardModal from "../../../Components/DashboardModal";
-import { IoSearch } from "react-icons/io5";
+import { useFetchUsersQuery } from "../../../features/userSlice";
 
-const Users = () => {
+const DashboardHomeTable = () => {
+  const { data, isLoading, isError, error } = useFetchUsersQuery();
+  console.log(data);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+
+  // Prepare the data for the Ant Design Table
+  const tableData = data?.data?.result.map((user, index) => ({
+    key: user._id, // AntD requires a unique key for each row
+    transIs: index + 1,
+    name: user.name,
+    email: user.email,
+    date: user.createdAt ? dayjs(user.createdAt).format("YYYY-MM-DD") : "N/A", // Format createdAt date
+    phone: user.phone || "N/A",
+    status: user.status || "Active",
+  }));
+
   const showModal = (data) => {
     setIsModalOpen(true);
     setModalData(data);
   };
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
+
   const columns = [
     {
-      title: "#SI",
-      dataIndex: "key",
-      key: "key",
-      render: (text) => <a>{text}</a>,
+      title: "#SL",
+      dataIndex: "transIs",
+      key: "transIs",
+      render: (text) => <span>{text}</span>,
     },
     {
       title: "User Name",
@@ -34,18 +48,10 @@ const Users = () => {
     },
     {
       title: "Join Date",
-      key: "joinDate",
-      dataIndex: "joinDate",
+      dataIndex: "date",
+      key: "date",
       align: "center",
-
     },
-    // {
-    //   title: "Phone Number",
-    //   key: "phone",
-    //   dataIndex: "phone",
-    //   // align: "center", 
-
-    // },
     {
       title: "Action",
       key: "action",
@@ -61,73 +67,107 @@ const Users = () => {
       ),
     },
   ];
-  const data = [];
-  for (let index = 0; index < 20; index++) {
-    data.push({
-      key: index + 1,
-      name: "John Brown",
-      email: "subro@gmal.com",
-      phone: '01611198984',
-      joinDate: "16 Apr 2024",
-      _id: "12112121" + index,
-    });
-  }
+
   return (
-    <div className="bg-[] font-oxygen rounded-lg py-[16px]">
-      <div className="grid grid-cols-12 gap-x-[22px]">
-        <div className="col-span-3 bg-white border text-center border-black px-[24px] py-[16px] rounded-2xl space-y-3">
-          <h3 className="text-[20px]">{"Total User"}</h3>
-          <h3 className="text-[38px] font-normal ">
-            {`2300`}
-          </h3>
-        </div>
+    <div className="rounded-lg py-[16px] border ">
+      <div className="px-4">
+        <h1 className="text-[25px] font-normal">Overview</h1>
 
-      </div>
-      {/* <div className="w-screen overflow-x-auto"> */}
-      <div className="">
-        <div className="px-6 pb-5 flex justify-between items-center">
-          <h3 className="text-[25px] font-normal pt-10 font-oxygen text-[#464343]">{"Recent user  "}</h3>
+        <div className="grid grid-cols-12 gap-x-[22px]">
+          <div className="col-span-3 bg-white border text-center border-black px-[24px] py-[16px] rounded-2xl space-y-3">
+            <h3 className="text-[20px]">{"Total User"}</h3>
 
+            {/* Handle loading and error states */}
+            {isLoading ? (
+              <h3 className="text-[38px] font-normal">Loading...</h3>
+            ) : isError ? (
+              <h3 className="text-[38px] font-normal text-red-600">
+                {error?.data?.message || "Failed to load data"}
+              </h3>
+            ) : (
+              <h3 className="text-[38px] font-normal">
+                {data?.data?.count || 0}
+              </h3>
+            )}
+          </div>
         </div>
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{
-            position: ["bottomCenter"],
-            showQuickJumper: true,
-          }}
-        />
       </div>
+      <div>
+        <h3 className="text-[25px] font-normal text-[#464343] px-6 pb-5">
+          Recent Users
+        </h3>
+
+        {isLoading ? (
+          <Spin size="large" />
+        ) : isError ? (
+          <Alert
+            message="Error"
+            description={error?.data?.message || "Failed to load data."}
+            type="error"
+            showIcon
+          />
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={tableData}
+            pagination={{
+              position: ["bottomCenter"],
+            }}
+          />
+        )}
+      </div>
+
       <DashboardModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}>
         <div className="h-[560px] flex flex-col justify-between">
-          <div className="space-y-[18px] text-sm text-[#181414] pb-2 divide-y">
-            <h6 className="font-medium text-center pt-[18px]">User Details</h6>
-            <div className="flex justify-between pt-[18px]">
-              <p>User Name :</p>
+          <div className="space-y-[36px] text-sm text-[#181414] py-2">
+            <h6 className="font-medium text-center">User Details</h6>
+            <div className="flex justify-between">
+              <p>User Name:</p>
               <p className="font-medium">{modalData.name}</p>
             </div>
-            <div className="flex justify-between pt-[18px]">
-              <p>Email :</p>
+            <div className="flex justify-between">
+              <p>Email:</p>
               <p className="font-medium">{modalData.email}</p>
             </div>
-            <div className="flex justify-between pt-[18px]">
-              <p>Phone Number :</p>
-              <p className="font-medium">{modalData.phone}</p>
+            <div className="flex justify-between">
+              <p>Email:</p>
+              <p className="font-medium">{modalData.address}</p>
             </div>
-            {/* <div className="flex justify-between pt-[18px]">
-              <p>Address</p>
-              <p className="font-medium">{"Dhaka, Bangladesh"}</p>
-            </div> */}
-            <div className="flex justify-between pt-[18px]">
-              <p>Joining Date :</p>
-              <p className="font-medium">{modalData.joinDate}</p>
+            <div className="flex justify-between">
+              <p>Phone:</p>
+              <p className="font-medium">{modalData.phone || "N/A"}</p>
             </div>
 
-            <div className="flex justify-center items-center pt-8">
-              <Button className="flex justify-center items-center text-center bg-primary rounded-full px-12 py-4 text-white">
-                Download
-              </Button>
+            <div className="flex justify-between">
+              <p>Status:</p>
+              <p className="font-medium">{modalData.status || "Active"}</p>
             </div>
+            <div className="flex justify-between">
+              <p>Join Date:</p>
+              <p className="font-medium">
+                {modalData.createdAt
+                  ? dayjs(modalData.createdAt).format("YYYY-MM-DD")
+                  : "N/A"}
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-5 pb-[40px]">
+            <Button
+              style={{ height: "44px" }}
+              className="w-full rounded-xl font-medium"
+            >
+              Download
+            </Button>
+            <Button
+              style={{
+                height: "44px",
+                backgroundColor: "#1F8D84",
+                color: "white",
+              }}
+              className="w-full rounded-xl font-medium"
+            >
+              Print
+            </Button>
           </div>
         </div>
       </DashboardModal>
@@ -135,4 +175,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default DashboardHomeTable;
