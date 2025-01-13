@@ -136,8 +136,5 @@ export const dashboardItems = [
     path: "/settings/about-us/edit",
     element: <EditAboutUs />,
   },
-  // {
-  //   path: "/settings/forget-password",
-  //   element: <For,
-  // },
+
 ];

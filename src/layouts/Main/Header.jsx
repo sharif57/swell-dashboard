@@ -51,20 +51,18 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "antd";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import defaultProfileImage from "../../assets/images/dash-profile.png";
-import { useNotificationQuery } from "../../features/userSlice";
+import { useAdminProfileQuery, useNotificationQuery } from "../../features/userSlice";
 
-const main_api = "http://10.0.80.44:3000";
+const main_api = "http://192.168.10.98:3000";
 
 const Header = () => {
-  const { data, isLoading, isError, error } = useNotificationQuery();
-  // const { data, isLoading, isError, error } = useFetchUsersQuery();
+  const { data: notificationData, isLoading: isLoadingNotifications } = useNotificationQuery();
+  const { data: profileData, isLoading: isLoadingProfile, isError, error } = useAdminProfileQuery();
 
-  const userInfo = JSON.parse(localStorage.getItem("user")) || {};
-  const { name, role, image } = userInfo;
+  // If the profile data is available, destructure name, role, and image
+  const { name, role, image } = profileData?.data || {};
 
   const navigate = useNavigate();
-
-  console.log(defaultProfileImage, "ssssssssssssssssssss");
 
   return (
     <div className="w-full font-oxygen h-[88px] flex justify-between items-center rounded-sm py-[16px] px-[32px] bg-[#033f4d] shadow-sm">
@@ -82,7 +80,7 @@ const Header = () => {
         >
           <Badge
             style={{ backgroundColor: "#1F8D84" }}
-            count={data?.data?.count}
+            count={notificationData?.data?.count}
           >
             <IoIosNotificationsOutline
               style={{ cursor: "pointer" }}
@@ -95,7 +93,7 @@ const Header = () => {
         <div className="flex items-center gap-3">
           <div>
             <img
-              src={`${main_api}/${data?.image}` || defaultProfileImage}
+              src={`${main_api}/${image || "default-image.jpg"}`} // Default fallback for image
               alt="Profile"
               className="rounded-full h-[48px] w-[48px]"
             />

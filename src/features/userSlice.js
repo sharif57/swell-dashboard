@@ -80,6 +80,7 @@ export const userApi = baseApi.injectEndpoints({
         },
       }),
     }),
+    
     adminProfile: builder.query({
       query: () => ({
         url: "/user/profile",
@@ -91,15 +92,34 @@ export const userApi = baseApi.injectEndpoints({
     }),
 
     updateProfile: builder.mutation({
-      query: (profileData) => ({
+      query: (updateInfo) => ({
         url: "/user/update-profile",
         method: "POST",
-        body: profileData,
+        body: updateInfo,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          "Content-Type": "application/json",
         },
       }),
+      // invalidatesTags: ["userMe"],
     }),
+    // updateProfile: builder.mutation({
+    //   query: (profileData) => {
+    //     console.log({ profileData})
+    //    return  {
+       
+    //       url: "/user/update-profile",
+    //       method: "POST",
+    //       body: profileData,
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //         "Content-Type": "application/json",
+    //       },
+      
+    //     }
+    //   },
+    // }),
+    
   }),
 });
 
@@ -107,6 +127,6 @@ export const {
   useFetchUsersQuery,
   useNotificationQuery,
   useLoginInfoQuery,
-  useUpdateProfileMutation,
   useAdminProfileQuery,
+  useUpdateProfileMutation,
 } = userApi;

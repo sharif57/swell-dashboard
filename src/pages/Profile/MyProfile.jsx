@@ -1,32 +1,41 @@
-import { Button, Form, Input } from "antd";
-import dashProfile from "../../assets/images/dashboard-profile.png";
-import { FiEdit } from "react-icons/fi";
+
+
+
+import { Button, Form, Input, Spin, Alert } from "antd";
 import { useNavigate } from "react-router-dom";
 import PhoneCountryInput from "../../Components/PhoneCountryInput";
 import PageHeading from "../../Components/PageHeading";
+import { useAdminProfileQuery } from "../../features/userSlice";
 
 const MyProfile = () => {
   const navigate = useNavigate();
 
-   const userInfo = JSON.parse(localStorage.getItem("user")) || {};
-    const { name, role, image , email, phone} = userInfo;
-    console.log(userInfo)
-
-
-  const onFinish = (values) => {
-    console.log("Form Submission Successful:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Form Submission Failed:", errorInfo);
-  };
+  const { data, isLoading, isError, error } = useAdminProfileQuery();
 
   const profileData = {
-    name: name,
-    email: email,
-    phone: phone ,
-    profile: dashProfile,
+    name: data?.data?.name || "N/A",
+    email: data?.data?.email || "N/A",
+    phone: data?.data?.phone || "N/A",
+    profile:`http://192.168.10.98:3000/${data?.data?.image}` || 'http://192.168.10.98:3000/images/development-with-abstract-background-1736742316216.jpg' ,
+    role: data?.data?.role || "N/A",
   };
+
+// console.log("local image",`${http://192.168.10.98:3000} /${data?.data.image}`)
+
+  if (isLoading) {
+    return <Spin size="large" />;
+  }
+
+  if (isError) {
+    return (
+      <Alert
+        message="Error"
+        description={error?.data?.message || "Failed to load profile data."}
+        type="error"
+        showIcon
+      />
+    );
+  }
 
   return (
     <div className="space-y-6 h-screen p-6 bg-gray-50">
@@ -42,7 +51,7 @@ const MyProfile = () => {
           className="h-14 w-52 flex items-center justify-center text-lg font-medium rounded-md"
           type="primary"
         >
-          Edit Profile <FiEdit className="ml-2" />
+          Edit Profile
         </Button>
       </div>
 
@@ -54,8 +63,6 @@ const MyProfile = () => {
           name="profileForm"
           layout="vertical"
           className="grid grid-cols-12 gap-6"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
           initialValues={{
             name: profileData.name,
@@ -70,7 +77,7 @@ const MyProfile = () => {
               className="h-36 w-36 rounded-full border-2 border-gray-200 shadow-sm mb-4"
             />
             <h5 className="text-lg text-gray-800 font-medium">Profile</h5>
-            <h4 className="text-2xl text-gray-900 font-bold">{role}</h4>
+            <h4 className="text-2xl text-gray-900 font-bold">{profileData.role}</h4>
           </div>
 
           {/* Form Fields */}

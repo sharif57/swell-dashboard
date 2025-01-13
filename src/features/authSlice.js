@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Replace with your base URL
-const API_URL = "http://10.0.80.44:3000/api/v1";
+const API_URL = "http://192.168.10.98:3000/api/v1";
 
 export const authApi = createApi({
   reducerPath: "authApi",

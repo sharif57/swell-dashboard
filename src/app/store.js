@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { userApi } from '../features/userSlice'; // Adjust the path
+import { userApi } from '../features/userSlice'; 
 import { authApi } from '../features/authSlice';
 import { PolicyApi } from '../features/PolicySlice';
 
@@ -14,3 +14,4 @@ const store = configureStore({
 });
 
 export default store;
+      
