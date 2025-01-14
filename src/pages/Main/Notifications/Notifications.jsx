@@ -1,8 +1,10 @@
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { useFetchUsersQuery } from "../../../features/userSlice";
+import { useNotificationQuery } from "../../../features/userSlice";
 
 const Notifications = () => {
-  const { data, isLoading, isError, error } = useFetchUsersQuery();
+  const { data, isLoading, isError, error } = useNotificationQuery();
+
+  console.log(data, "eeeeeeeee");
 
   // Check if the data is available
   if (isLoading) return <div>Loading...</div>;
@@ -21,16 +23,20 @@ const Notifications = () => {
             key={notification._id}
             className="flex items-center gap-4 px-[24px] py-[8px] cursor-pointer hover:bg-gray-200"
           >
-            <IoIosNotificationsOutline
-              style={{ cursor: "pointer" }}
-              className="text-[#1F8D84] bg-[#BADCD9] w-[40px] h-[40px] rounded-lg p-2 shadow-sm transition-all"
-            />
+            <IoIosNotificationsOutline className="text-[#0a0a0a] bg-[#BADCD9] w-[40px] h-[40px] rounded-lg p-2 shadow-sm transition-all" />
             <div className="space-y-[8px]">
-              <h1 className="text-[#ff3333] font-semibold">
-                {notification.message} 
+              <h1 className="text-[#0c0c0c] font-normal font-oxygen">
+                {notification.message} {/* Display the message text */}
               </h1>
               <small className="text-[12px] text-[#646262]">
-                {new Date(notification.createdAt).toLocaleString()} 
+                {new Date(notification.createdAt).toLocaleDateString("en-US", {
+                  weekday: "long", // Adds the day of the week
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}{" "}
+                at{" "}
+                {new Date(notification.createdAt).toLocaleTimeString("en-US")}
               </small>
             </div>
           </div>

@@ -77,7 +77,7 @@ const MyProfile = () => {
               className="h-36 w-36 rounded-full border-2 border-gray-200 shadow-sm mb-4"
             />
             <h5 className="text-lg text-gray-800 font-medium">Profile</h5>
-            <h4 className="text-2xl text-gray-900 font-bold">{profileData.role}</h4>
+            <h4 className="text-2xl text-gray-900 font-normal font-oxygen">{profileData.role}</h4>
           </div>
 
           {/* Form Fields */}
