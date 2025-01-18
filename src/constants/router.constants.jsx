@@ -22,7 +22,7 @@ export const dashboardItems = [
     name: "Dashboard",
     path: "/",
     icon: RiDashboardHorizontalFill,
-    element: <DashboardHome />,
+    element:<DashboardHome />,
   },
   {
     name: "Users",

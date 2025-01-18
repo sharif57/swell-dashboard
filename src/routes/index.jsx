@@ -7,14 +7,16 @@ import VerifyEmail from "../pages/Auth/VerifyEmail";
 import ResetPassword from "../pages/Auth/ResetPassword";
 import { routesGenerators } from "../utils/routesGenerators";
 import { dashboardItems } from "../constants/router.constants";
+import AdminRoutes from "../constants/AdminRoutes";
+// import AdminRoutes from "../constants/AdminRoutes";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      // <AdminRoutes>
+      <AdminRoutes>
         <Main />
-      // {/* </AdminRoutes> */}
+      </AdminRoutes>
     ),
     children: routesGenerators(dashboardItems),
   },
