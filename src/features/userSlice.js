@@ -92,8 +92,10 @@
 import baseApi from "../api/baseApi";
 
 export const userApi = baseApi.injectEndpoints({
+  
   endpoints: (builder) => ({
     // Fetch all users
+   
     fetchUsers: builder.query({
       query: () => ({
         url: "/user/all-user",

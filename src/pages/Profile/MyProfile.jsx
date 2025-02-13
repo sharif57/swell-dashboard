@@ -1,6 +1,3 @@
-
-
-
 import { Button, Form, Input, Spin, Alert } from "antd";
 import { useNavigate } from "react-router-dom";
 import PhoneCountryInput from "../../Components/PhoneCountryInput";
@@ -12,15 +9,17 @@ const MyProfile = () => {
 
   const { data, isLoading, isError, error } = useAdminProfileQuery();
 
+  console.log('data from admin',data)
+
   const profileData = {
     name: data?.data?.name || "N/A",
     email: data?.data?.email || "N/A",
     phone: data?.data?.phone || "N/A",
-    profile:`http://192.168.10.98:3000/${data?.data?.image}` || 'http://192.168.10.98:3000/images/development-with-abstract-background-1736742316216.jpg' ,
+    profile:`http://45.55.209.88:3000/${data?.data?.image}` || 'http://45.55.209.88:3000/images/development-with-abstract-background-1736742316216.jpg' ,
     role: data?.data?.role || "N/A",
   };
 
-// console.log("local image",`${http://192.168.10.98:3000} /${data?.data.image}`)
+console.log({profileData})
 
   if (isLoading) {
     return <Spin size="large" />;
